@@ -6,7 +6,7 @@ import { CategoriesService } from "../categories/categories.service";
 import Mail from "./types/Mail";
 import { ConfigService } from "@nestjs/config";
 import { getMailConfig } from "../config";
-import {connectToImap, openInbox} from "./imapUtils";
+import { connectToImap, openInbox } from "./imapUtils";
 
 @Injectable()
 export class MailsService {
@@ -15,7 +15,7 @@ export class MailsService {
         private configService: ConfigService
     ) {}
 
-    async getMailsToday(): Promise<Mail[]> {
+    async getMailsByDay(date: string): Promise<Mail[]> {
         const imapConfig = getMailConfig(this.configService);
         const imap = new Imap(imapConfig);
 
@@ -23,12 +23,13 @@ export class MailsService {
             await connectToImap(imap);
             await openInbox(imap);
 
-            const searchResults = await this.searchEmailsToday(imap);
+            const searchResults = await this.searchEmailsByDay(imap, date);
 
             if (searchResults.length === 0) {
-                console.log('No emails found for today.');
+                console.log(`No emails found for ${date}.`);
                 return [];
             }
+
             return await this.fetchEmails(imap, searchResults);
         } catch (err) {
             console.error('Error while fetching emails:', err);
@@ -38,13 +39,20 @@ export class MailsService {
         }
     }
 
-    private searchEmailsToday(imap: Imap): Promise<number[]> {
-        const todayDateString = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    private searchEmailsByDay(imap: Imap, date: string): Promise<number[]> {
+        const nextDay = new Date(date);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const nextDayString = nextDay.toISOString().split('T')[0];
+
         return new Promise((resolve, reject) => {
-            imap.search([['SINCE', todayDateString]], (err, results) => {
-                if (err) reject(err);
-                resolve(results);
-            });
+            // Search for emails between the start of the day and the next day
+            imap.search(
+                [['SINCE', date], ['BEFORE', nextDayString]], // Find emails only for the specified date
+                (err, results) => {
+                    if (err) reject(err);
+                    resolve(results);
+                }
+            );
         });
     }
 

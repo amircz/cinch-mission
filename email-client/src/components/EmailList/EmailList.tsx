@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { useEmails } from '../../EmailContext';
-import { tableCellStyle } from "./styles";
+import React, {useState} from 'react';
+import {useEmails} from '../../context/EmailContext';
+import {
+    tableCellStyle,
+    tableStyle,
+    stickyHeaderStyle,
+    paginationContainerStyle,
+    paginationButtonStyle,
+    pageInfoStyle
+} from './styles';
 
 const EmailList: React.FC = () => {
-    const { emails, isLoading } = useEmails();
+    const {emails, isLoading} = useEmails();
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const emailsPerPage = 10; // Number of emails per page, you can adjust this
+    const emailsPerPage: number = 10
 
     // Get the current emails for the page
     const indexOfLastEmail = currentPage * emailsPerPage;
@@ -25,29 +32,29 @@ const EmailList: React.FC = () => {
     return (
         <div>
             <h2>Email Summaries</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table style={tableStyle}>
                 <thead>
-                <tr style={{ position: 'sticky', top: 0, backgroundColor: '#fff', zIndex: 10 }}>
-                    <th {...tableCellStyle}>Subject</th>
-                    <th {...tableCellStyle}>From</th>
-                    <th {...tableCellStyle}>Date</th>
-                    <th {...tableCellStyle}>Categories</th>
+                <tr style={stickyHeaderStyle}>
+                    <th style={tableCellStyle}>Subject</th>
+                    <th style={tableCellStyle}>From</th>
+                    <th style={tableCellStyle}>Date</th>
+                    <th style={tableCellStyle}>Categories</th>
                 </tr>
                 </thead>
                 <tbody>
                 {isLoading ? (
                     <tr>
-                        <td colSpan={4} style={{ textAlign: 'center' }}>Loading...</td>
+                        <td colSpan={4} style={{textAlign: 'center'}}>Loading...</td>
                     </tr>
                 ) : (
                     currentEmails.map((email, index) => (
                         <tr key={index}>
-                            <td {...tableCellStyle}>{email.subject}</td>
-                            <td {...tableCellStyle}>{email.from}</td>
-                            <td {...tableCellStyle}>
+                            <td style={tableCellStyle}>{email.subject}</td>
+                            <td style={tableCellStyle}>{email.from}</td>
+                            <td style={tableCellStyle}>
                                 {new Date(email.date).toLocaleString()}
                             </td>
-                            <td {...tableCellStyle}>
+                            <td style={tableCellStyle}>
                                 {email.categories.join(', ')}
                             </td>
                         </tr>
@@ -57,21 +64,21 @@ const EmailList: React.FC = () => {
             </table>
 
             {/* Pagination controls */}
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+            <div style={paginationContainerStyle}>
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    style={{ marginRight: '10px' }}
+                    style={paginationButtonStyle}
                 >
                     Previous
                 </button>
-                <span style={{ margin: '0 10px' }}>
+                <span style={pageInfoStyle}>
                     Page {currentPage} of {totalPages}
                 </span>
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    style={{ marginLeft: '10px' }}
+                    style={paginationButtonStyle}
                 >
                     Next
                 </button>

@@ -1,15 +1,37 @@
-export const tableCellStyle = {
-    style: {
-        border: '1px solid #ddd',
-        padding: '0.5rem',
-        fontSize: '1rem',
-        '@media (max-width: 768px)': {  // For tablets and smaller screens
-            padding: '0.3rem',  // Reduced padding for small screens
-            fontSize: '0.875rem', // Slightly smaller font for small screens
-        },
-        '@media (max-width: 480px)': {  // For mobile screens
-            padding: '0.2rem',  // Even smaller padding
-            fontSize: '0.75rem', // Even smaller font for mobile
-        }
-    }
+import { CSSProperties } from 'react';
+
+export const tableCellStyle: CSSProperties = {
+    padding: '1rem', // Using rem for padding for better scalability
+    textAlign: 'left',
+    borderBottom: '1px solid #ddd',
+};
+
+export const tableStyle: CSSProperties = {
+    width: '100%', // Make the table responsive to the container width
+    borderCollapse: 'collapse',
+};
+
+export const stickyHeaderStyle: CSSProperties = {
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#fff',
+    zIndex: 10,
+};
+
+export const paginationContainerStyle: CSSProperties = {
+    marginTop: '2rem', // Use rem for top margin
+    textAlign: 'center',
+};
+
+export const paginationButtonStyle: CSSProperties = {
+    marginRight: '1rem', // Use rem for margin
+    padding: '0.5rem 1rem',
+    cursor: 'pointer',
+    backgroundColor: '#4CAF50', // Example color
+    border: 'none',
+    borderRadius: '0.3rem',
+};
+
+export const pageInfoStyle: CSSProperties = {
+    margin: '0 1rem',
 };

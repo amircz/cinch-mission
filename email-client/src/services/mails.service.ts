@@ -1,10 +1,16 @@
 import axios from 'axios';
-import CategorizedMailsResponse from "../types/CategorizedMailsResponse";
+import {apiConfig} from "../config";
 
-
-
-// Fetch emails from the backend
-export const fetchEmailsFromServer = async (): Promise<CategorizedMailsResponse> => {
-    const response = await axios.get<CategorizedMailsResponse>('http://localhost:3001/mails/categorized'); // Update with your backend URL
-    return response.data;
+export const fetchEmailsFromServer = async (date?: string) => {
+    try {
+        const defaultTodayDate = new Date().toISOString().split('T')[0];
+        const categorizeMailsFullURL: string = `${apiConfig.apiBaseUrl}${apiConfig.apiCategorizedMailsSuffix}`
+        const response = await axios.get((categorizeMailsFullURL), {
+            params: {date: date || defaultTodayDate}
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching emails from server:', error);
+        throw error;
+    }
 };

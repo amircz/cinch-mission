@@ -1,6 +1,6 @@
 import React from 'react';
 import {PieChart, Pie, Cell, Tooltip, Legend} from 'recharts';
-import {useEmails} from "../../EmailContext";
+import {useEmails} from "../../context/EmailContext";
 import CategorizedMail from "../../types/CategorizedMail";
 import {COLORS, legendProps, legendStyle, pieStyleProps} from "./styles";
 
