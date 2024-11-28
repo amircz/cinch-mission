@@ -1,26 +1,52 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {EmailProvider} from './EmailContext';
+import EmailList from './components/EmailList/EmailList';
+import EmailCategoryChart from './components/EmailCategoryChart/EmailCategoryChart';
+import {useEmails} from './EmailContext';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    const {refreshEmails, isLoading, syncTime} = useEmails(); // Access the refreshEmails function and syncTime from the context
+
+    return (
+        <EmailProvider>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                margin: '20px'
+            }}>
+                <h1>Email Management</h1>
+
+                {/* Refresh Button placed at the top of the page */}
+                <button
+                    onClick={refreshEmails}
+                    disabled={isLoading}  // Disable button when loading
+                    style={{marginBottom: '20px'}}
+                >
+                    {isLoading ? 'Refreshing...' : 'Refresh Emails'}
+                </button>
+
+                {/* Last Sync Time */}
+                {syncTime && (
+                    <div style={{marginBottom: '20px'}}>
+                        <strong>Last Sync Time: </strong>{syncTime}
+                    </div>
+                )}
+
+                {isLoading ?
+                    <div>
+                        <div>Loading emails...</div>
+                        <div>Loading chart...</div>
+                    </div> : <div><EmailList/>
+                        <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                            <EmailCategoryChart/>
+                        </div>
+                    </div>
+                }
+            </div>
+        </EmailProvider>
+    );
+};
 
 export default App;
