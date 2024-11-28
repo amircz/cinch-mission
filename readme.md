@@ -19,7 +19,8 @@ You can select a date using a date picker (allowing a range of more than 3 month
 ## Running the Project
 
 ### Server Setup:
-1. Create a `.env` file inside the **server** directory containing the following variables:
+1. run `npm install` 
+2. Create a `.env` file inside the **server** directory containing the following variables:
 
    ```env
    MAIL_USER=<YOUR_EMAIL_ADDRESS>  # Email address you want to use
@@ -36,7 +37,8 @@ You can select a date using a date picker (allowing a range of more than 3 month
    ```
 
 ### Client Setup:
-1. Create a `.env` file inside the **client** directory containing the following variables:
+1. run `npm install`
+2. Create a `.env` file inside the **client** directory containing the following variables:
 
    ```env
    REACT_APP_API_URL=http://localhost:3001  # Server URL for the API
